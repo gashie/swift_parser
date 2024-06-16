@@ -106,12 +106,11 @@ const autoGenerateCookie = async (req, res,next) => {
 
 
     //    Update({last_login:systemDate}, 'users', 'user_id', UserInfo.user_id)
-
+    UserDbInfo.service_token = null
     // await saveOwner(UserDbInfo,JSON.parse(owner));
     CatchHistory({ api_response: "User logged in", function_name: 'Auth', date_started: systemDate, sql_action: "SELECT", event: "service_key AUTHENTICATION", actor: service_key }, req)
     let tokenPayload = {
-        service_key_id: UserDbInfo.service_key,
-        // ...JSON.parse(owner)
+       ...UserDbInfo,
     }
     req.user = tokenPayload;
     sendCookie(tokenPayload, 1, 200, res, req);

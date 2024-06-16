@@ -48,6 +48,6 @@ exports.UpdateFundManager = asynHandler(async (req, res, next) => {
     }
 })
 exports.PingChannel = asynHandler(async (req, res) => {
- console.log(req?.user);
+ console.log('req?.user',req?.user);
  res.send(req.body)
 })
