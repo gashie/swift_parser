@@ -4,7 +4,7 @@ const { DetectDevice, DetectIp, MainDec } = require("../helper/devicefuncs")
 
 const asynHandler = require("../middleware/async");
 const { sendResponse, CatchHistory } = require("../helper/utilfunc");
-const { autoGenerateCookie, autoGenerateCounterCookie } = require("../helper/auto");
+const { autoGenerateCookie, } = require("../helper/auto");
 
 dotenv.config({ path: "./config/config.env" });
 const systemDate = new Date().toISOString().slice(0, 19).replace("T", " ");
