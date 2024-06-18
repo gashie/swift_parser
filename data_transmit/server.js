@@ -1,4 +1,7 @@
 const express = require("express");
+const https = require("https");
+const http = require("http");
+const fs = require("fs");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const dotenv = require("dotenv");
@@ -11,6 +14,15 @@ const cookieParser = require('cookie-parser')
 dotenv.config({ path: "./config/config.env" });
 //initialise express
 const app = express();
+
+const ssslServer = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'certp', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'certp', 'cert.pem')),
+}, app)
+const httpServer = http.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'certp', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'certp', 'cert.pem')),
+}, app)
 
 //body parser
 app.use(express.urlencoded({ extended: true }));
@@ -65,11 +77,27 @@ app.use((error, req, res, next) => {
 //create port
 const PORT = process.env.PORT || 9000;
 //listen to portnpm
-app.listen(PORT, () => {
-    console.log(
+// app.listen(PORT, () => {
+//     console.log(
+//         `DATA TRANSMIT API: Running in ${process.env.NODE_ENV} mode and listening on port http://:${PORT}`
+//     );
+//     logger.debug(`DATA TRANSMIT API: Running in ${process.env.NODE_ENV} mode and listening on port http://:${PORT}`);
+// });
+
+
+ssslServer.listen(PORT, () => {
+ console.log(
         `DATA TRANSMIT API: Running in ${process.env.NODE_ENV} mode and listening on port http://:${PORT}`
     );
     logger.debug(`DATA TRANSMIT API: Running in ${process.env.NODE_ENV} mode and listening on port http://:${PORT}`);
+
+});
+httpServer.listen(5055, () => {
+ console.log(
+        `DATA TRANSMIT API: Running in ${process.env.NODE_ENV} mode and listening on port http://:${PORT}`
+    );
+    logger.debug(`DATA TRANSMIT API: Running in ${process.env.NODE_ENV} mode and listening on port http://:${PORT}`);
+
 });
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
